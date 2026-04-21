@@ -1,3 +1,4 @@
+#include "icons.h"
 #include "USB.h"
 #include "USBHIDKeyboard.h"
 #include <Keypad.h>
@@ -119,13 +120,60 @@ void sendKey(char key) {
 // DISPLAY
 // ========================
 void updateDisplay(char key) {
- tft.fillRect(0, 80, 320, 100, TFT_BLACK);
+  tft.fillRect(0, 80, 320, 160, TFT_BLACK);
 
   tft.setTextDatum(MC_DATUM);
 
+  // Texto
   tft.setTextColor(TFT_YELLOW);
   tft.drawString("COMANDO", 160, 90, 2);
 
   tft.setTextColor(TFT_GREEN);
-  tft.drawString(getKeyName(key), 160, 120, 4);
+  tft.drawString(getKeyName(key), 160, 140, 4);
+
+  // Ícones
+  switch (key) {
+    case 'e': 
+      tft.pushImage(20, 100, 32, 32, icon_engine_start_1);
+      break;
+    case 'f': 
+    tft.pushImage(20, 100, 32, 32, icon_hazard_on);
+      break;
+    case 'h': 
+    tft.pushImage(20, 100, 32, 32, icon_engine_start_1);
+      break;
+    case 'i': 
+    tft.pushImage(20, 100, 32, 32, icon_wipers_off);
+      break;
+    case 'k': 
+    tft.pushImage(20, 100, 32, 32, icon_high_beam_on);
+      break;
+    case 'l': 
+    tft.pushImage(20, 100, 32, 32, icon_low_beam_on);
+      break;
+    case 'm': 
+    tft.pushImage(20, 100, 32, 32, icon_F5);
+      break;
+    case 'n': 
+    tft.pushImage(20, 100, 32, 32, icon_engine_start_1);
+      break;
+    case 'o': 
+    tft.pushImage(20, 100, 32, 32, icon_beacon_2_on);
+      break;
+    case 'p': 
+    tft.pushImage(20, 100, 32, 32, icon_wipers_on);
+      break;
+    case 't': 
+    tft.pushImage(20, 100, 32, 32, icon_trailer_on);
+      break;
+    case ']': 
+    tft.pushImage(20, 100, 32, 32, icon_indicator_left_on);
+      break;
+    case '[': 
+    tft.pushImage(20, 100, 32, 32, icon_indicator_right_on);
+      break;
+    case ' ': 
+    tft.pushImage(20, 100, 32, 32, icon_parkbreak_on);
+      break;
+  }
 }
