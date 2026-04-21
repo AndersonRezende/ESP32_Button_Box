@@ -12,11 +12,12 @@ TFT_eSPI tft = TFT_eSPI();
 const byte ROWS = 4;
 const byte COLS = 4;
 
+char lastKey = 0;
 char keys[ROWS][COLS] = {
-  {'h', 'n', '[', ']'},
-  {'0', 'l', 'k', 'o'},
-  {',', 'f', '.', 'm'},
-  {' ', 'u', 'j', 't'}
+  {'e', 'h', ']', 'm'},
+  {' ', 'n', 'f', '+'},
+  {'i', 'l', '[', '-'},
+  {'p', 'k', 'o', 't'}
 };
 
 byte rowPins[ROWS] = {1, 2, 3, 4};
@@ -29,22 +30,21 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 // ========================
 const char* getKeyName(char key) {
   switch (key) {
-    case 'h': return "BUZINA";
-    case 'n': return "LIMPADOR";
-    case '[': return "LIMPADOR -";
-    case ']': return "LIMPADOR +";
-    case '0': return "DESLIGAR";
-    case 'l': return "FAROL BAIXO";
-    case 'k': return "FAROL ALTO";
-    case 'o': return "GIROFLEX";
-    case ',': return "SETA ESQ";
-    case '.': return "SETA DIR";
+    case 'e': return "IGNICAO";
     case 'f': return "ALERTA";
+    case 'h': return "BUZINA";
+    case 'i': return "LIMPADOR -";
+    case 'k': return "FAROL ALTO";
+    case 'l': return "FAROL";
     case 'm': return "MAPA";
-    case ' ': return "FREIO MAO";
-    case 'u': return "VIDRO SOBE";
-    case 'j': return "VIDRO DESCE";
+    case 'n': return "BUZINA A AR";
+    case 'o': return "GIROFLEX";
+    case 'p': return "LIMPADOR +";
     case 't': return "REBOQUE";
+    case ']': return "SETA ESQ";
+    case '[': return "SETA DIR";
+    case ' ': return "FREIO MAO";
+    
     default: return "DESCONHECIDO";
   }
 }
@@ -74,8 +74,9 @@ void setup() {
 void loop() {
   char key = keypad.getKey();
 
-  if (key) {
+  if (key && key != lastKey) {
     handleKeyboard(key);
+    lastKey = key;
   }
 }
 
@@ -87,22 +88,44 @@ void handleKeyboard(char key) {
   Serial.println(key);
 
   // Envia tecla
-  Keyboard.press(key);
-  delay(20);
-  Keyboard.releaseAll();
+  sendKey(key);
 
   // Atualiza display
   updateDisplay(key);
+}
+
+void sendKey(char key) {
+  switch (key) {
+    case '+':
+      Keyboard.press(KEY_LEFT_SHIFT);
+      Keyboard.press('=');
+      break;
+
+    case '_':
+      Keyboard.press(KEY_LEFT_SHIFT);
+      Keyboard.press('-');
+      break;
+
+    default:
+      Keyboard.press(key);
+      break;
+  }
+
+  delay(20);
+  Keyboard.releaseAll();
 }
 
 // ========================
 // DISPLAY
 // ========================
 void updateDisplay(char key) {
-  tft.fillRect(0, 80, 320, 100, TFT_BLACK);
+ tft.fillRect(0, 80, 320, 100, TFT_BLACK);
 
   tft.setTextDatum(MC_DATUM);
 
+  tft.setTextColor(TFT_YELLOW);
   tft.drawString("COMANDO", 160, 90, 2);
+
+  tft.setTextColor(TFT_GREEN);
   tft.drawString(getKeyName(key), 160, 120, 4);
 }
