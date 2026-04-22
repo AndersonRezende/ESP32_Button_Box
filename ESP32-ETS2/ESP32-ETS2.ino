@@ -45,6 +45,8 @@ const char* getKeyName(char key) {
     case ']': return "SETA ESQ";
     case '[': return "SETA DIR";
     case ' ': return "FREIO MAO";
+    case '+': return "VIDRO +";
+    case '-': return "VIDRO -";
     
     default: return "DESCONHECIDO";
   }
@@ -134,46 +136,52 @@ void updateDisplay(char key) {
   // Ícones
   switch (key) {
     case 'e': 
-      tft.pushImage(20, 100, 32, 32, icon_engine_start_1);
+      tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_engine_start_1);
       break;
     case 'f': 
-    tft.pushImage(20, 100, 32, 32, icon_hazard_on);
+    tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_hazard_on);
       break;
     case 'h': 
-    tft.pushImage(20, 100, 32, 32, icon_engine_start_1);
+    tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_buzina);
       break;
     case 'i': 
-    tft.pushImage(20, 100, 32, 32, icon_wipers_off);
+    tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_wipers_off);
       break;
     case 'k': 
-    tft.pushImage(20, 100, 32, 32, icon_high_beam_on);
+    tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_high_beam_on);
       break;
     case 'l': 
-    tft.pushImage(20, 100, 32, 32, icon_low_beam_on);
+    tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_low_beam_on);
       break;
     case 'm': 
-    tft.pushImage(20, 100, 32, 32, icon_F5);
+    tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_F5);
       break;
     case 'n': 
-    tft.pushImage(20, 100, 32, 32, icon_engine_start_1);
+    tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_buzina);
       break;
     case 'o': 
-    tft.pushImage(20, 100, 32, 32, icon_beacon_2_on);
+    tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_beacon_on);
       break;
     case 'p': 
-    tft.pushImage(20, 100, 32, 32, icon_wipers_on);
+    tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_wipers_on);
       break;
     case 't': 
-    tft.pushImage(20, 100, 32, 32, icon_trailer_on);
+    tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_trailer_on);
       break;
     case ']': 
-    tft.pushImage(20, 100, 32, 32, icon_indicator_left_on);
+    tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_indicator_left_on);
       break;
     case '[': 
-    tft.pushImage(20, 100, 32, 32, icon_indicator_right_on);
+    tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_indicator_right_on);
       break;
     case ' ': 
-    tft.pushImage(20, 100, 32, 32, icon_parkbreak_on);
+    tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_parkbreak_on);
+      break;
+    case '+': 
+    tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_window_left_up);
+      break;
+    case '-': 
+    tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_window_left_down);
       break;
   }
 }
