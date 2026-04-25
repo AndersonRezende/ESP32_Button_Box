@@ -4,6 +4,16 @@
 #include <Keypad.h>
 #include <TFT_eSPI.h>
 
+#define LED_LEFT_ARROW 17
+#define LED_RIGHT_ARROW 18
+
+bool blinkState = false;
+unsigned long lastBlink = 0;
+bool leftArrow = false;
+bool rightArrow = false;
+bool hazardLights = false;
+
+
 USBHIDKeyboard Keyboard;
 TFT_eSPI tft = TFT_eSPI();
 
@@ -13,7 +23,6 @@ TFT_eSPI tft = TFT_eSPI();
 const byte ROWS = 4;
 const byte COLS = 4;
 
-char lastKey = 0;
 char keys[ROWS][COLS] = {
   {'e', 'h', ']', 'm'},
   {' ', 'n', 'f', '+'},
@@ -27,7 +36,7 @@ byte colPins[COLS] = {5, 6, 7, 8};
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
 // ========================
-// MAPA DE NOMES (para display)
+// NAME MAP (for display)
 // ========================
 const char* getKeyName(char key) {
   switch (key) {
@@ -58,6 +67,10 @@ const char* getKeyName(char key) {
 void setup() {
   Serial.begin(115200);
 
+  // Blinks
+  pinMode(LED_LEFT_ARROW, OUTPUT);
+  pinMode(LED_RIGHT_ARROW, OUTPUT);
+
   // Display
   tft.init();
   tft.setRotation(1);
@@ -77,14 +90,15 @@ void setup() {
 void loop() {
   char key = keypad.getKey();
 
-  if (key && key != lastKey) {
+  if (key && keypad.getState() == PRESSED) {
     handleKeyboard(key);
-    lastKey = key;
   }
+
+  updateBlink();
 }
 
 // ========================
-// AÇÃO
+// ACTION
 // ========================
 void handleKeyboard(char key) {
   Serial.print("Tecla: ");
@@ -133,13 +147,16 @@ void updateDisplay(char key) {
   tft.setTextColor(TFT_GREEN);
   tft.drawString(getKeyName(key), 160, 140, 4);
 
-  // Ícones
+  // ICONS
   switch (key) {
     case 'e': 
       tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_engine_start_1);
       break;
     case 'f': 
     tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_hazard_on);
+      hazardLights = !hazardLights;
+      leftArrow = false;
+      rightArrow = false;
       break;
     case 'h': 
     tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_buzina);
@@ -170,9 +187,15 @@ void updateDisplay(char key) {
       break;
     case ']': 
     tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_indicator_left_on);
+      leftArrow = !leftArrow;
+      rightArrow = false;
+      hazardLights = false;
       break;
     case '[': 
     tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_indicator_right_on);
+      rightArrow = !rightArrow;
+      leftArrow = false;
+      hazardLights = false;
       break;
     case ' ': 
     tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_parkbreak_on);
@@ -183,5 +206,31 @@ void updateDisplay(char key) {
     case '-': 
     tft.pushImage(20, 100, ICON_WIDTH, ICON_HEIGH, icon_window_left_down);
       break;
+  }
+}
+
+// ========================
+// BLINKS
+// ========================
+void updateBlink() {
+  if (millis() - lastBlink > 500) {
+    if (hazardLights) {
+      digitalWrite(LED_LEFT_ARROW, blinkState);
+      digitalWrite(LED_RIGHT_ARROW, blinkState);
+    }
+    else if (leftArrow) {
+      digitalWrite(LED_LEFT_ARROW, blinkState);
+      digitalWrite(LED_RIGHT_ARROW, LOW);
+    }
+    else if (rightArrow) {
+      digitalWrite(LED_RIGHT_ARROW, blinkState);
+      digitalWrite(LED_LEFT_ARROW, LOW);
+    }
+    else {
+      digitalWrite(LED_LEFT_ARROW, LOW);
+      digitalWrite(LED_RIGHT_ARROW, LOW);
+    }
+    lastBlink = millis();
+    blinkState = !blinkState;
   }
 }
