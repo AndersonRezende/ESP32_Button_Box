@@ -1,8 +1,11 @@
+#include <WiFi.h>
+#include "config.h"
 #include "icons.h"
 #include "USB.h"
 #include "USBHIDKeyboard.h"
 #include <Keypad.h>
 #include <TFT_eSPI.h>
+#include "display/display.h"
 
 #define LED_LEFT_ARROW 17
 #define LED_RIGHT_ARROW 18
@@ -38,7 +41,7 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 // ========================
 // NAME MAP (for display)
 // ========================
-const char* getKeyName(char key) {
+/*const char* getKeyName(char key) {
   switch (key) {
     case 'e': return "IGNICAO";
     case 'f': return "ALERTA";
@@ -59,7 +62,7 @@ const char* getKeyName(char key) {
     
     default: return "DESCONHECIDO";
   }
-}
+}*/
 
 // ========================
 // SETUP
@@ -72,12 +75,14 @@ void setup() {
   pinMode(LED_RIGHT_ARROW, OUTPUT);
 
   // Display
-  tft.init();
+  /*tft.init();
   tft.setRotation(1);
   tft.fillScreen(TFT_BLACK);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
-  tft.drawCentreString("PAINEL ETS2", 160, 10, 4);
+  tft.drawCentreString("PAINEL ETS2", 160, 10, 4);*/
+
+  initDisplay();
 
   // USB HID
   Keyboard.begin();
@@ -92,6 +97,7 @@ void loop() {
 
   if (key && keypad.getState() == PRESSED) {
     handleKeyboard(key);
+    updateDisplay(key);
   }
 
   updateBlink();
@@ -106,9 +112,6 @@ void handleKeyboard(char key) {
 
   // Envia tecla
   sendKey(key);
-
-  // Atualiza display
-  updateDisplay(key);
 }
 
 void sendKey(char key) {
@@ -135,7 +138,7 @@ void sendKey(char key) {
 // ========================
 // DISPLAY
 // ========================
-void updateDisplay(char key) {
+void updateDisplays(char key) {
   tft.fillRect(0, 80, 320, 160, TFT_BLACK);
 
   tft.setTextDatum(MC_DATUM);
