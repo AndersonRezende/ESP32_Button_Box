@@ -40,4 +40,53 @@
 # debug information files
 *.dwo
 
+# =========================
+# PlatformIO
+# =========================
+.pio/
+.pioenvs/
+.piolibdeps/
+libdeps/
+
+# =========================
+# CLion / JetBrains
+# =========================
+.idea/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+
+# =========================
+# Build / compilação
+# =========================
+*.o
+*.obj
+*.elf
+*.bin
+*.map
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# Sistema
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Python (PlatformIO usa internamente)
+# =========================
+__pycache__/
+*.pyc
+
+# =========================
+# Arquivos temporários
+# =========================
+*.swp
+*.swo
+*~
+
 /img
