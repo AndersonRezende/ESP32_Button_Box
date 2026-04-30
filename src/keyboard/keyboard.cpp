@@ -13,7 +13,7 @@ void sendKeyboadKey(const char key) {
         switch (key) {
             case '+':
                 Keyboard.press(KEY_LEFT_SHIFT);
-                Keyboard.press('=');
+                Keyboard.press('+');
                 break;
             case '_':
                 Keyboard.press(KEY_LEFT_SHIFT);
