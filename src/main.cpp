@@ -1,15 +1,15 @@
 #include <Arduino.h>
-#include <WiFi.h>
 #include "display/display.h"
 #include "keyboard/keyboard.h"
 #include "keypad/keypad.h"
 #include "led/blink.h"
+#include "utils/logger.h"
 
 void setupKeypadCallback();
 
 void setup() {
-    Serial.begin(115200);
-    Serial.println("Initializing ESP32 ETS2 Button Box...");
+    initLogger(115200);
+    logPrintln("Initializing ESP32 ETS2 Button Box...");
 
     initDisplay();
     initKeyboard();
@@ -22,12 +22,8 @@ void loop() {
     updateBlink();
 }
 
-void logKey(const char key) {
-    Serial.println(key);
-}
-
 void setupKeypadCallback() {
-    addKeyListener(logKey);
+    addKeyListener(logPrintln);
     addKeyListener(updateDisplay);
     addKeyListener(sendKeyboadKey);
     addKeyListener(onKeyPressed);
