@@ -1,7 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-inline const char* getKeyName(char key) {
+inline const char* getKeyName(const char key) {
     switch (key) {
         case 'e': return "IGNICAO";
         case 'f': return "ALERTA";

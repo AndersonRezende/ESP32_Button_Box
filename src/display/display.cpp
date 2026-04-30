@@ -1,5 +1,5 @@
 #include <TFT_eSPI.h>
-#include "../icons.h"
+#include "icons.h"
 #include "../utils.h"
 #include "display.h"
 
