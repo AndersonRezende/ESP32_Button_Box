@@ -1,5 +1,4 @@
-#ifndef UTILS_H
-#define UTILS_H
+#pragma once
 
 inline const char* getKeyName(const char key) {
     switch (key) {
@@ -22,5 +21,3 @@ inline const char* getKeyName(const char key) {
         default: return "DESCONHECIDO";
     }
 }
-
-#endif
