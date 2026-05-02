@@ -1,4 +1,4 @@
 #pragma once
 #include <WiFi.h>
 
-void onWiFiEvent(WiFiEvent_t event);
+void onWiFiEvent(const WiFiEvent_t event);

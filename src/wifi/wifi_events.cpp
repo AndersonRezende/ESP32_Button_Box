@@ -2,7 +2,7 @@
 #include "wifi_udp.h"
 #include "utils/logger.h"
 
-auto onWiFiEvent(WiFiEvent_t event) -> void {
+auto onWiFiEvent(const WiFiEvent_t event) -> void {
     switch(event) {
         case ARDUINO_EVENT_WIFI_STA_CONNECTED:
             logPrintln("WiFi conectado");
