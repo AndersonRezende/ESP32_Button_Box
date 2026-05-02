@@ -3,12 +3,12 @@
 #include "wifi_udp.h"
 #include <WiFi.h>
 
-#define SSID "SSID"
-#define PASSWORD "PASSWORD"
+const char* ssid = WIFI_SSID;
+const char* password = WIFI_PASS;
 
 void initWiFi() {
     WiFi.onEvent(onWiFiEvent);
-    WiFi.begin(SSID, PASSWORD);
+    WiFi.begin(ssid, password);
 }
 
 void wifiUpdate() {
